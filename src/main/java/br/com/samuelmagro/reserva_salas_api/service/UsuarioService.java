@@ -42,8 +42,7 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDTO findById(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoCustomException(String.format("Usuário de id: %d não foi encontrado!", id)));
+        Usuario usuario = findUsuarioById(id);
         return usuarioMapper.fromEntityToDTO(usuario);
     }
 
@@ -65,8 +64,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO update(@Valid UsuarioUpdateDTO updateDTO, Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoCustomException(String.format("Usuário de id: %d não foi encontrado!", id)));
+        Usuario usuario = findUsuarioById(id);
 
         if (usuarioRepository.existsByEmailAndIdNot(updateDTO.email(), id)) {
             throw new RegistroDuplicadoCustomException("Email já cadastrado.");
@@ -81,8 +79,7 @@ public class UsuarioService {
 
     @Transactional
     public void delete(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoCustomException(String.format("Usuário de id: %d não foi encontrado!", id)));
+        Usuario usuario = findUsuarioById(id);
 
         if (!usuario.getAtivo()) {
             return;
@@ -91,5 +88,10 @@ public class UsuarioService {
             usuario.setAtualizadoEm(Instant.now());
             usuarioRepository.save(usuario);
         }
+    }
+
+    private Usuario findUsuarioById(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoCustomException(String.format("Usuário de id: %d não foi encontrado!", id)));
     }
 }
