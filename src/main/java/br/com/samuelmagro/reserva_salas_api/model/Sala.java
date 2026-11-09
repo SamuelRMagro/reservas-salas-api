@@ -1,9 +1,7 @@
 package br.com.samuelmagro.reserva_salas_api.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -11,6 +9,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "tb_salas")
 public class Sala {
 
