@@ -2,8 +2,7 @@ package br.com.samuelmagro.reserva_salas_api.exception;
 
 import br.com.samuelmagro.reserva_salas_api.dto.exception.ErroCampo;
 import br.com.samuelmagro.reserva_salas_api.dto.exception.ErroDTO;
-import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroDuplicadoCustomException;
-import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroNaoEncontradoCustomException;
+import br.com.samuelmagro.reserva_salas_api.exception.custom.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +54,82 @@ public class GlobalExceptionHandler {
                 System.currentTimeMillis()
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
+    }
+
+    @ExceptionHandler(ConflitoHorarioCustomException.class)
+    public ResponseEntity<ErroDTO> conflitoHorarioCustomException(ConflitoHorarioCustomException ex) {
+        ErroDTO erro = new ErroDTO(
+                HttpStatus.CONFLICT.value(),
+                "Conflito de reserva.",
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
+    }
+
+    @ExceptionHandler(ForaHorarioPermitidoCustomException.class)
+    public ResponseEntity<ErroDTO> foraHorarioPermitidoCustomException(ForaHorarioPermitidoCustomException ex) {
+        ErroDTO erro = new ErroDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                "Fora do horário permitido.",
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(PermanenciaMinimaCustomExcepion.class)
+    public ResponseEntity<ErroDTO> permanenciaMinimaCustomExcepion(PermanenciaMinimaCustomExcepion ex) {
+        ErroDTO erro = new ErroDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                "Permanência mínima insuficiente.",
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(AntecedenciaInsuficienteCustomException.class)
+    public ResponseEntity<ErroDTO> antecedenciaInsuficienteCustomException(AntecedenciaInsuficienteCustomException ex) {
+        ErroDTO erro = new ErroDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                "Antecedência insuficiente.",
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(CapacidadeExcedidaCustomException.class)
+    public ResponseEntity<ErroDTO> capacidadeExcedidaCustomException(CapacidadeExcedidaCustomException ex) {
+        ErroDTO erro = new ErroDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                "Capacidade excedida.",
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(RegistroInativoCustomException.class)
+    public ResponseEntity<ErroDTO> registroInativoCustomException(RegistroInativoCustomException ex) {
+        ErroDTO erro = new ErroDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                "Registro inativo.",
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(AtualizacaoInvalidaCustomException.class)
+    public ResponseEntity<ErroDTO> atualizacaoInvalidaCustomException(AtualizacaoInvalidaCustomException ex) {
+        ErroDTO erro = new ErroDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                "Atualização inválida.",
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 }
