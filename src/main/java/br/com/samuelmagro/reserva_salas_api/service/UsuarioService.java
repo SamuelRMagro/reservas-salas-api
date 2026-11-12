@@ -4,6 +4,7 @@ import br.com.samuelmagro.reserva_salas_api.dto.usuario.UsuarioCreateDTO;
 import br.com.samuelmagro.reserva_salas_api.dto.usuario.UsuarioFilterRequest;
 import br.com.samuelmagro.reserva_salas_api.dto.usuario.UsuarioResponseDTO;
 import br.com.samuelmagro.reserva_salas_api.dto.usuario.UsuarioUpdateDTO;
+import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroInativoCustomException;
 import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroDuplicadoCustomException;
 import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroNaoEncontradoCustomException;
 import br.com.samuelmagro.reserva_salas_api.mapper.UsuarioMapper;
@@ -93,5 +94,10 @@ public class UsuarioService {
     private Usuario findUsuarioById(Long id) {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoCustomException(String.format("Usuário de id: %d não foi encontrado!", id)));
+    }
+
+    public Usuario findUsuarioByIdAndAtivo(Long Id) {
+        return usuarioRepository.findByIdAndAtivoTrue(Id)
+                .orElseThrow(() -> new RegistroInativoCustomException(String.format("Usuário de id: %d não foi encontrado ou está inativo.", Id)));
     }
 }
