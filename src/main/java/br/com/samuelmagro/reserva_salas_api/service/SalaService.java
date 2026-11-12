@@ -4,6 +4,7 @@ import br.com.samuelmagro.reserva_salas_api.dto.sala.SalaCreateDTO;
 import br.com.samuelmagro.reserva_salas_api.dto.sala.SalaFilterRequest;
 import br.com.samuelmagro.reserva_salas_api.dto.sala.SalaResponseDTO;
 import br.com.samuelmagro.reserva_salas_api.dto.sala.SalaUpdateDTO;
+import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroInativoCustomException;
 import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroDuplicadoCustomException;
 import br.com.samuelmagro.reserva_salas_api.exception.custom.RegistroNaoEncontradoCustomException;
 import br.com.samuelmagro.reserva_salas_api.mapper.SalaMapper;
@@ -96,5 +97,10 @@ public class SalaService {
     private Sala findSalaById(Long id) {
         return salaRepository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoCustomException(String.format("Sala de id: %d não foi encontrada.", id)));
+    }
+
+    public Sala findByIdAndAtivo(Long id) {
+        return salaRepository.findByIdAndAtivaTrue(id)
+                .orElseThrow(() -> new RegistroInativoCustomException(String.format("Sala de id: %d não foi encontrada ou está inativa.", id)));
     }
 }
